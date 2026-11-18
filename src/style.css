@@ -342,81 +342,115 @@ h2 em,
 
 .slider-viewport {
   position: relative;
-  height: 520px;
-  border-radius: 8px;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--ink) 0%, #2a2417 55%, var(--gold-deep) 100%);
-  border: 1px solid rgba(200, 162, 74, 0.45);
-  box-shadow: 18px 18px 0 var(--gold-soft);
+  padding: 6px 4px 18px;
+}
+
+.slider-track {
+  display: flex;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hero-slide {
-  position: absolute;
-  inset: 0;
-  margin: 0;
-  opacity: 0;
-  transform: scale(1.04);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: none;
+  flex: 0 0 100%;
+  min-width: 100%;
 }
 
-.hero-slide.is-active {
-  opacity: 1;
-  transform: scale(1);
-  pointer-events: auto;
-  z-index: 1;
+.hero-choice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
 }
 
-.hero-slide img {
+.hero-choice {
+  height: 490px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 26px;
+  background: linear-gradient(145deg, var(--ink), #2a2315);
+  border: 1px solid rgba(200, 162, 74, 0.38);
+  box-shadow: 0 16px 0 rgba(200, 162, 74, 0.16);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+}
+
+.hero-choice:first-child {
+  margin-top: 28px;
+}
+
+.hero-choice:last-child {
+  margin-bottom: 28px;
+}
+
+.hero-choice:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 0 rgba(200, 162, 74, 0.28);
+}
+
+.hero-choice img {
   height: 100%;
   width: 100%;
   object-fit: cover;
+  object-position: center top;
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.hero-slide::after {
+.hero-choice:hover img {
+  transform: scale(1.06);
+}
+
+.hero-choice::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(15, 15, 15, 0.08) 0%, rgba(15, 15, 15, 0.78) 100%);
+  background: linear-gradient(180deg, transparent 48%, rgba(15, 15, 15, 0.72));
+  pointer-events: none;
 }
 
-.slide-caption {
+.choice-overlay {
   position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 24px;
   z-index: 2;
-  background: rgba(15, 15, 15, 0.86);
-  border: 1px solid rgba(200, 162, 74, 0.5);
-  border-left: 3px solid var(--gold);
-  border-radius: var(--radius);
-  padding: 16px 20px;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(200, 162, 74, 0.45);
+  border-radius: 18px;
+  padding: 13px 15px 14px;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.hero-choice:hover .choice-overlay {
+  background: var(--ink);
   color: var(--white);
-  backdrop-filter: blur(8px);
 }
 
-.slide-tag {
+.choice-overlay span {
   display: block;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 9px;
   font-weight: 700;
-  color: var(--gold-bright);
-  margin-bottom: 4px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 3px;
 }
 
-.slide-caption strong {
+.hero-choice:hover .choice-overlay span {
+  color: var(--gold-bright);
+}
+
+.choice-overlay strong {
   font-family: var(--display);
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.3;
+  font-size: 13px;
+  line-height: 1.25;
 }
 
 .slider-controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 24px;
+  margin-top: 10px;
 }
 
 .slider-dots {
@@ -1429,9 +1463,11 @@ h2 em,
   .hero {
     gap: 40px;
   }
-  .slider-viewport {
-    height: 420px;
-    box-shadow: 12px 12px 0 var(--gold-soft);
+  .hero-choice {
+    height: 390px;
+  }
+  .hero-choice-grid {
+    gap: 12px;
   }
   .services-grid,
   .testimonials-grid,
@@ -1519,18 +1555,32 @@ h2 em,
     align-items: flex-start;
     gap: 18px;
   }
-  .slider-viewport {
-    height: 360px;
-    box-shadow: 10px 10px 0 var(--gold-soft);
+  .hero-choice-grid {
+    gap: 10px;
   }
-  .slide-caption {
-    left: 14px;
-    right: 14px;
-    bottom: 14px;
-    padding: 12px 14px;
+  .hero-choice {
+    height: 320px;
+    border-radius: 18px;
+    box-shadow: 0 10px 0 rgba(200, 162, 74, 0.16);
   }
-  .slide-caption strong {
-    font-size: 14px;
+  .hero-choice:first-child {
+    margin-top: 16px;
+  }
+  .hero-choice:last-child {
+    margin-bottom: 16px;
+  }
+  .choice-overlay {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    border-radius: 12px;
+    padding: 9px 7px;
+  }
+  .choice-overlay span {
+    font-size: 8px;
+  }
+  .choice-overlay strong {
+    font-size: 11px;
   }
   .section {
     padding: 72px 20px;

@@ -16,38 +16,64 @@ const products = [
     ],
     url: 'https://www.stylemeup.ng/',
     image:
-      'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1200&q=85',
+      'https://upload.wikimedia.org/wikipedia/commons/e/eb/Haircut_Ritual.jpg',
   },
 ]
 
 const heroSlides = [
   {
-    image:
-      'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=88',
-    alt: 'A stylist preparing and caring for a client hair treatment in studio',
-    tag: 'Stylists & Salons',
-    title: 'Precision hair styling and everyday care.',
+    pair: [
+      {
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/7/71/A_woman_braiding_hair_with_extensions.jpg',
+        alt: 'Nigerian hairstylist braiding hair with extensions for a client',
+        eyebrow: 'For stylists',
+        title: 'Hair Braiding & Salon Care',
+      },
+      {
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Adepa_hairstyle.jpg/1280px-Adepa_hairstyle.jpg',
+        alt: 'African beauty client with neatly styled natural twists',
+        eyebrow: 'For customers',
+        title: 'Natural Styling & Weaves',
+      },
+    ],
   },
   {
-    image:
-      'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=1200&q=88',
-    alt: 'Professional barber grooming service in a clean modern barbershop',
-    tag: 'Barbershop & Grooming',
-    title: 'Sharp grooming built around reliable service.',
+    pair: [
+      {
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/A_Ghanaian_Barber_giving_a_client_a_haircut.jpg/1280px-A_Ghanaian_Barber_giving_a_client_a_haircut.jpg',
+        alt: 'African barber giving a client a clean haircut',
+        eyebrow: 'For barbers',
+        title: 'Barbershop & Grooming',
+      },
+      {
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Barber_and_smiling_customer_in_a_Kenyan_barbershop.jpg/1280px-Barber_and_smiling_customer_in_a_Kenyan_barbershop.jpg',
+        alt: 'Smiling African client and barber in a modern barbershop',
+        eyebrow: 'For clients',
+        title: 'Trusted Grooming Studios',
+      },
+    ],
   },
   {
-    image:
-      'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1200&q=88',
-    alt: 'Makeup brushes and beauty artistry tools prepared for a client session',
-    tag: 'Makeup & Beauty',
-    title: 'Trusted beauty specialists for every occasion.',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=88',
-    alt: 'Relaxing spa and massage treatment environment',
-    tag: 'Spa & Wellness',
-    title: 'Calm, restorative spa treatments and wellness care.',
+    pair: [
+      {
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/a/a2/Film_Makeup_by_Labelle%27s_Touch.jpg',
+        alt: 'Nigerian makeup artist applying beauty artistry to a client',
+        eyebrow: 'Makeup artistry',
+        title: 'Studio & Event Makeup',
+      },
+      {
+        image:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Un_technicien_de_soins_de_beaut%C3%A9_ambulant_00.jpg/1280px-Un_technicien_de_soins_de_beaut%C3%A9_ambulant_00.jpg',
+        alt: 'African personal care specialist providing beauty and manicure treatment',
+        eyebrow: 'Personal care',
+        title: 'Nails, Spa & Wellness',
+      },
+    ],
   },
 ]
 
@@ -167,24 +193,34 @@ function ProductCard({ product, featured = false }) {
 function HeroSlider() {
   return `<div class="hero-slider" role="region" aria-label="Havanatouch featured scenes">
     <div class="slider-viewport">
-      ${heroSlides
-        .map(
-          (slide, idx) => `<figure class="hero-slide ${idx === 0 ? 'is-active' : ''}" data-slide="${idx}">
-            <img src="${slide.image}" alt="${slide.alt}" ${idx === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>
-            <figcaption class="slide-caption">
-              <span class="slide-tag">${slide.tag}</span>
-              <strong>${slide.title}</strong>
-            </figcaption>
-          </figure>`
-        )
-        .join('')}
+      <div class="slider-track">
+        ${heroSlides
+          .map(
+            (slide, idx) => `<div class="hero-slide ${idx === 0 ? 'is-active' : ''}" data-slide="${idx}">
+              <div class="hero-choice-grid">
+                ${slide.pair
+                  .map(
+                    (card, cardIdx) => `<article class="hero-choice">
+                      <img src="${card.image}" alt="${card.alt}" ${idx === 0 ? 'fetchpriority="high"' : ''}>
+                      <div class="choice-overlay">
+                        <span>${card.eyebrow}</span>
+                        <strong>${card.title}</strong>
+                      </div>
+                    </article>`
+                  )
+                  .join('')}
+              </div>
+            </div>`
+          )
+          .join('')}
+      </div>
     </div>
     <div class="slider-controls">
       <div class="slider-dots" role="tablist" aria-label="Slide selector">
         ${heroSlides
           .map(
             (slide, idx) =>
-              `<button type="button" class="slider-dot ${idx === 0 ? 'is-active' : ''}" data-dot="${idx}" aria-label="Show slide ${idx + 1}: ${slide.tag}" aria-selected="${idx === 0}"></button>`
+              `<button type="button" class="slider-dot ${idx === 0 ? 'is-active' : ''}" data-dot="${idx}" aria-label="Show slide ${idx + 1}: ${slide.pair[0].title}" aria-selected="${idx === 0}"></button>`
           )
           .join('')}
       </div>
@@ -513,6 +549,7 @@ function initSlider() {
   const slider = document.querySelector('.hero-slider')
   if (!slider) return
 
+  const track = slider.querySelector('.slider-track')
   const slides = [...slider.querySelectorAll('.hero-slide')]
   const dots = [...slider.querySelectorAll('.slider-dot')]
   const counter = slider.querySelector('.slider-counter')
@@ -520,6 +557,9 @@ function initSlider() {
 
   function showSlide(index) {
     active = (index + slides.length) % slides.length
+    if (track) {
+      track.style.transform = `translateX(-${active * 100}%)`
+    }
     slides.forEach((el, idx) => el.classList.toggle('is-active', idx === active))
     dots.forEach((el, idx) => {
       el.classList.toggle('is-active', idx === active)
